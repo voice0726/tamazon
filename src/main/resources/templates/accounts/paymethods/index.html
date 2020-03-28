@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <title>index page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h2>支払い方法の設定</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ブランド</th>
+      <th>カード番号</th>
+      <th>カード所有者名</th>
+      <th>月</th>
+      <th>年</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="payMethod : ${payMethodList}" th:object="${payMethod}">
+      <td th:text="*{brand}"></td>
+      <td th:text="*{cardNumber}"></td>
+      <td th:text="*{cardHolder}"></td>
+      <td th:text="*{expireMonth}"></td>
+      <td th:text="*{expireYear}"></td>
+      <td><span th:if="*{isDefaultMethod() == true}">既定</span></td>
+      <td><a th:href="@{/accounts/paymethods/edit/{uuid}(uuid=*{uuid})}">編集</a></td>
+      <td><a th:href="@{/accounts/paymethods/delete/{uuid}(uuid=*{uuid})}">削除</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a href="/accounts/paymethods/add">新規登録</a>
+  <a href="/accounts/">戻る</a>
+</div>
+</body>
+</html>

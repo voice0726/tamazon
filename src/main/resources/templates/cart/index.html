@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <title>index page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h2>カート</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>商品名</th>
+      <th>価格</th>
+      <th>数量</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cartitem : ${cartItems}" th:object="${cartitem}">
+      <td th:text="*{item.name}"></td>
+      <td th:text="*{item.price}"></td>
+      <td th:text="*{count}"></td>
+      <td><a th:href="@{/accounts/cart/delete/{uuid}(uuid=*{uuid})}">削除</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a href="/accounts/">戻る</a>
+</div>
+</body>
+</html>

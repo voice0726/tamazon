@@ -1,0 +1,34 @@
+version: "3"
+services:
+
+  mysql-ec-practice:
+    image: mysql:5.7
+    container_name: ec-site-practice
+    restart: always
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ec-site
+    ports:
+      - 53306:3306
+    volumes:
+      - ./db/mysql_init:/docker-entrypoint-initdb.d
+      - ./db/mysql_data:/var/lib/mysql
+      - ./db/conf.d:/etc/mysql/conf.d
+
+  mysql-ec-practice-unit-test:
+    image: mysql:5.7
+    container_name: ec-site-practice-unit-test
+    restart: always
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: unit-test
+    ports:
+      - 63306:3306
+    volumes:
+      - ./db/mysql_init_test:/docker-entrypoint-initdb.d
+      - ./db/conf.d:/etc/mysql/conf.d
+

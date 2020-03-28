@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <title>index page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h2>カード情報編集</h2>
+  <form th:action="@{/accounts/paymethods/edit}" method="post" th:object="${payMethodForm}">
+    <input type="hidden" th:field="*{uuid}">
+    <div class="form-group">
+      <label class="form-check-label" for="brand">ブランド</label>
+      <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" style="color: red"></span>
+      <input id="brand" class="form-control" type="text"
+             th:field="*{brand}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="card-number">カード番号</label>
+      <span th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" style="color: red"></span>
+      <input id="card-number" class="form-control" type="text"
+             th:field="*{cardNumber}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="card-holder">所有者</label>
+      <span th:if="${#fields.hasErrors('cardHolder')}" th:errors="*{cardHolder}" style="color: red"></span>
+      <input id="card-holder" class="form-control" type="text"
+             th:field="*{cardHolder}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="month">月</label>
+      <span th:if="${#fields.hasErrors('expireMonth')}" th:errors="*{expireMonth}" style="color: red"></span>
+      <input id="month" class="form-control" type="number"
+             th:field="*{expireMonth}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="year">年</label>
+      <span th:if="${#fields.hasErrors('expireYear')}" th:errors="*{expireYear}" style="color: red"></span>
+      <input id="year" class="form-control" type="number"
+             th:field="*{expireYear}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="default-method">既定の支払い方法</label>
+      <input id="default-method" class="form-control" type="checkbox" th:field="*{defaultMethod}">
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="submit">
+    </div>
+  </form>
+</div>
+</body>
+</html>

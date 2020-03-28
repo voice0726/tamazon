@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <title>index page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h2>ユーザーの設定</h2>
+  <a href="/admin/user/add">追加</a>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ユーザー名</th>
+      <th>表示名</th>
+      <th>登録日</th>
+      <th>更新日</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" th:object="${user}">
+      <td th:text="*{username}"></td>
+      <td th:text="*{viewName}"></td>
+      <td th:text="*{createdAt}"></td>
+      <td th:text="*{updatedAt}"></td>
+      <td><a href="#" id="edit-link">編集</a></td>
+      <td><a href="#" id="delete-link">削除</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a href="/admin/">戻る</a>
+</div>
+</body>
+</html>
