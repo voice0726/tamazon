@@ -1,6 +1,8 @@
 package jp.akinori.ecsite.controller;
 
+import jp.akinori.ecsite.entity.Item;
 import jp.akinori.ecsite.entity.User;
+import jp.akinori.ecsite.form.admin.ItemForm;
 import jp.akinori.ecsite.form.admin.UserForm;
 import jp.akinori.ecsite.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +42,34 @@ public class AdminController {
     }
 
     @PostMapping("/user/add")
-    @ResponseBody
-    public ResponseEntity<Object> addUser(@ModelAttribute("userForm") UserForm form, BindingResult bindingResult) {
+    public String addUser(@ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+            return "admin/user/add";
         }
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        adminService.createUser(userForm);
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping("/item")
+    public String item(@ModelAttribute("itemForm") ItemForm itemForm, Model model, Pageable pageable) {
+        Page<Item> items = adminService.fetchAllItems(pageable);
+        model.addAttribute("items", items);
+        return "admin/item/index";
+    }
+
+    @GetMapping("/item/add")
+    public String addItemIndex(@ModelAttribute("itemForm") ItemForm itemForm, Model model, Pageable pageable) {
+        Page<User> users = adminService.fetchAllUsers(pageable);
+        model.addAttribute("users", users);
+        return "admin/user/add";
+    }
+
+    @PostMapping("/item/add")
+    public String addItemExec(@ModelAttribute("itemForm") ItemForm itemForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/item/add";
+        }
+        adminService.createItem(itemForm);
+        return "redirect:/admin/item";
     }
 }
