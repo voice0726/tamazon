@@ -375,6 +375,29 @@ class PayMethodsControllerTest {
     }
 
     /**
+     * 他ユーザーのPaymethodの編集ページを表示しようとし403遷移するかテスト
+     *
+     * @throws Exception 例外
+     */
+    @Test
+    @DatabaseSetup(TEST_DATA_DIR)
+    @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
+    public void testEditInvalidAccess() throws Exception {
+
+        MockHttpServletRequestBuilder postRequest =
+                MockMvcRequestBuilders
+                        .get("/accounts/paymethods/edit/87672a24-6fff-4936-8868-1849e639ef5b");
+
+        mockMvc.perform(postRequest)
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(view().name("error/403"))
+                .andReturn();
+    }
+
+
+
+    /**
      * PayMethodを編集するテスト
      *
      * @throws Exception 例外

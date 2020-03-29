@@ -293,6 +293,10 @@ class AddressControllerTest {
         assertThat(fieldError.getField(), is("address3"));
     }
 
+    /**
+     * 編集ページを開けるかテスト
+     * @throws Exception 例外
+     */
     @Test
     @DatabaseSetup(TEST_DATA_DIR)
     @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
@@ -306,6 +310,26 @@ class AddressControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("accounts/addresses/edit"))
+                .andReturn();
+    }
+
+    /**
+     * 他ユーザーの編集ページを開こうとして403が出るかテスト
+     * @throws Exception 例外
+     */
+    @Test
+    @DatabaseSetup(TEST_DATA_DIR)
+    @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
+    public void testEditInvalidAccess() throws Exception {
+
+        MockHttpServletRequestBuilder getRequest =
+                MockMvcRequestBuilders
+                        .get("/accounts/addresses/edit/040a2300-5bc0-4a3b-ac89-bbaeae71a8ab");
+
+        mockMvc.perform(getRequest)
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(view().name("error/403"))
                 .andReturn();
     }
 

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="ja">
+<div>
+  <ul>
+    <li th:class="${page.isFirstPage()} ? 'disabled':''" style="display:inline">
+      <span th:if="${page.isFirstPage()}">←先頭</span>
+      <a th:if="${not page.isFirstPage()}" th:href="@{${url}(page=0)}">←先頭</a>
+    </li>
+    <li th:each='i : ${#numbers.sequence(0, page.getTotalPages()-1)}' th:class="(${i}==${page.getNumber()})? 'active' : ''" style="display:inline">
+      <span th:if='${i}==${page.getNumber()}' th:text='${i+1}'>1</span>
+      <a th:if='${i}!=${page.getNumber()}' th:href="@{${url}(page=${i})}">
+        <span th:text='${i+1}'>1</span>
+      </a>
+    </li>
+    <li th:class="${page.isLastPage()} ? 'disabled':''" style="display:inline">
+      <span th:if="${page.isLastPage()}">末尾➝</span>
+      <a th:if="${not page.isLastPage()}" th:href="@{${url}(page=(${page.getTotalPages()}-1))}">末尾➝</a>
+    </li>
+  </ul>
+</div>

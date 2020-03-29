@@ -1,9 +1,12 @@
 package jp.akinori.ecsite.service.impl;
 
+import jp.akinori.ecsite.entity.Category;
 import jp.akinori.ecsite.entity.Item;
 import jp.akinori.ecsite.entity.User;
+import jp.akinori.ecsite.form.admin.CategoryForm;
 import jp.akinori.ecsite.form.admin.ItemForm;
 import jp.akinori.ecsite.form.admin.UserForm;
+import jp.akinori.ecsite.repository.CategoryRepository;
 import jp.akinori.ecsite.repository.ItemRepository;
 import jp.akinori.ecsite.repository.UserRepository;
 import jp.akinori.ecsite.service.AdminService;
@@ -19,6 +22,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public User createUser(UserForm form) {
@@ -49,5 +53,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Page<Item> fetchAllItems(Pageable pageable) {
         return itemRepository.findAll(pageable);
+    }
+
+    @Override
+    public Category createCategory(CategoryForm form) {
+        Category category = new Category();
+        category.setName(form.getName());
+        return categoryRepository.saveAndFlush(category);
+    }
+
+    @Override
+    public Page<Category> fetchAllCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
     }
 }

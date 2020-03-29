@@ -18,11 +18,13 @@ public class CreateTestUser {
     public void insertTestUser() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = new User();
-        user.setUsername("voice0726");
-        user.setViewName("voice0726");
-        user.setPassword(encoder.encode("duf4ceye"));
+        user.setUsername("test2");
+        user.setViewName("test2");
+        user.setPassword(encoder.encode("123456"));
         user.setRoleId(1);
         user.setDeleted(false);
         user.setUuid(UUID.randomUUID());
+
+        repository.saveAndFlush(user);
     }
 }

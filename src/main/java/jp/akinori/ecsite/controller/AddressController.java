@@ -7,6 +7,7 @@ import jp.akinori.ecsite.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/accounts/addresses/")
@@ -56,9 +58,14 @@ public class AddressController {
 
     @GetMapping("/edit/{uuid}")
     public String edit(
-            @PathVariable("uuid") String uuid, Model model
-    ) {
-        AddressForm addressForm = accountService.createAddressForm(uuid);
+            @PathVariable("uuid") String uuid, Model model,
+            @AuthenticationPrincipal LoginUser loginUser
+    )    {
+        Address address = accountService.fetchAddressById(UUID.fromString(uuid));
+        if (!address.getUserId().equals(loginUser.getUuid())) {
+            throw new AccessDeniedException("Access not allowed.");
+        }
+        AddressForm addressForm = accountService.convertToForm(address);
         model.addAttribute("addressForm", addressForm);
         return "accounts/addresses/edit";
     }

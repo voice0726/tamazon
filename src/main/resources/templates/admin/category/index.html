@@ -10,29 +10,21 @@
 </head>
 <body>
 <div class="container">
-    <h2>商品の設定</h2>
-    <a href="/admin/item/add">追加</a>
+    <h2>カテゴリーの設定</h2>
+    <a href="/admin/category/add">追加</a>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>uuid</th>
-            <th>商品名</th>
-            <th>カテゴリー</th>
-            <th>説明</th>
-            <th>価格</th>
-            <th>在庫</th>
+            <th>カテゴリー名</th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${items}" th:object="${item}">
-            <td th:text="*{uuid}"></td>
-            <td th:text="*{name}"></td>
-            <td th:text="*{category.name}"></td>
-            <td th:text="*{description}"></td>
-            <td th:text="*{price}"></td>
-            <td th:text="*{stock}"></td>
+        <tr th:each="category : ${categories}" th:object="${category}">
+            <td th:text="*{key}"></td>
+            <td th:text="*{value}"></td>
             <td><a href="#" id="edit-link">編集</a></td>
             <td><a href="#" id="delete-link">削除</a></td>
         </tr>

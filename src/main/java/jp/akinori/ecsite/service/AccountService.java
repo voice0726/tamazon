@@ -8,10 +8,13 @@ import jp.akinori.ecsite.form.PayMethodForm;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public interface AccountService {
+    Map<String, String> fetchCategoryNameByUuid(); // todo: rename function
+
     User fetchUserById(UUID uuid);
 
     List<Address> fetchAddressesByUserId(UUID userId);
@@ -22,7 +25,7 @@ public interface AccountService {
 
     Address fetchAddressById(UUID uuid);
 
-    AddressForm createAddressForm(String uuidStr);
+    AddressForm convertToForm(Address address);
 
     void deleteAddress(String uuidStr);
 
@@ -34,7 +37,7 @@ public interface AccountService {
 
     PayMethod fetchPayMethodById(UUID uuid);
 
-    PayMethodForm createPayMethodForm(String uuidStr);
+    PayMethodForm convertToForm(PayMethod payMethod);
 
     void deletePayMethod(String uuidStr);
 }

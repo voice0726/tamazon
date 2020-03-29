@@ -7,6 +7,7 @@ import jp.akinori.ecsite.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/accounts/paymethods")
@@ -64,9 +66,14 @@ public class PayMethodsController {
 
     @GetMapping("/edit/{uuid}")
     public String edit(
-            @PathVariable("uuid") String uuid, Model model
+            @PathVariable("uuid") String uuid, Model model,
+            @AuthenticationPrincipal LoginUser loginUser
     ) {
-        PayMethodForm payMethodForm = accountService.createPayMethodForm(uuid);
+        PayMethod payMethod = accountService.fetchPayMethodById(UUID.fromString(uuid));
+        if (!payMethod.getUserId().equals(loginUser.getUuid())) {
+            throw new AccessDeniedException("Access not allowed.");
+        }
+        PayMethodForm payMethodForm = accountService.convertToForm(payMethod);
         model.addAttribute("payMethodForm", payMethodForm);
         return "accounts/paymethods/edit";
     }

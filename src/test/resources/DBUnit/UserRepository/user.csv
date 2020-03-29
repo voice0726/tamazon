@@ -1,2 +1,3 @@
-uuid,username,password,view_name,role_id,deleted,created_at,updated_at
-d6859a71-5779-4ea4-804d-7216aa958b5a,test,test,test,1,0,2020-03-15 09:09:35,2020-03-15 09:09:35
+uuid,username,view_name,password,role_id,deleted,created_at,updated_at
+d6859a71-5779-4ea4-804d-7216aa958b5a,test,test,$2a$10$Cy9oQoG/cvjt4H6kYD1a..Ez9Bf0lKyW9fACDVzv6UKOhOfxwMwF,1,0,2020-03-15 00:09:35,2020-03-15 00:09:35
+52bbc409-a4ed-4bc3-a024-467a7987fb4c,test2,test2,$2a$10$Cy9oQoG/cvjt4H6kYD1a..Ez9Bf0lKyW9fACDVzv6UKOhOfxwMwF.,1,0,2020-03-29 12:04:29,2020-03-29 12:04:29

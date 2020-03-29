@@ -1,12 +1,14 @@
 package jp.akinori.ecsite.service.impl;
 
 import jp.akinori.ecsite.entity.Address;
+import jp.akinori.ecsite.entity.Category;
 import jp.akinori.ecsite.entity.PayMethod;
 import jp.akinori.ecsite.entity.User;
 import jp.akinori.ecsite.exception.RecordNotFoundException;
 import jp.akinori.ecsite.form.AddressForm;
 import jp.akinori.ecsite.form.PayMethodForm;
 import jp.akinori.ecsite.repository.AddressRepository;
+import jp.akinori.ecsite.repository.CategoryRepository;
 import jp.akinori.ecsite.repository.PayMethodRepository;
 import jp.akinori.ecsite.repository.UserRepository;
 import jp.akinori.ecsite.service.AccountService;
@@ -14,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,15 @@ public class AccountServiceImpl implements AccountService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final PayMethodRepository payMethodRepository;
+    private final CategoryRepository categoryRepository;
+
+    @Override
+    public Map<String, String> fetchCategoryNameByUuid() {
+        List<Category> all = categoryRepository.findAll();
+        Map<String, String> map = new LinkedHashMap<>();
+        all.forEach(e->map.put(e.getUuid().toString(), e.getName()));
+        return map;
+    }
 
     @Override
     public User fetchUserById(UUID uuid) {
@@ -84,8 +93,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AddressForm createAddressForm(String uuidStr) {
-        Address address = fetchAddressById(UUID.fromString(uuidStr));
+    public AddressForm convertToForm(Address address) {
         return new AddressForm(address);
     }
 
@@ -148,9 +156,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PayMethodForm createPayMethodForm(String uuidStr) {
-        PayMethod method = fetchPayMethodById(UUID.fromString(uuidStr));
-        return new PayMethodForm(method);
+    public PayMethodForm convertToForm(PayMethod payMethod) {
+        return new PayMethodForm(payMethod);
     }
 
     @Override

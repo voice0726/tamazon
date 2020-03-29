@@ -1,7 +1,9 @@
 package jp.akinori.ecsite.service;
 
+import jp.akinori.ecsite.entity.Category;
 import jp.akinori.ecsite.entity.Item;
 import jp.akinori.ecsite.entity.User;
+import jp.akinori.ecsite.form.admin.CategoryForm;
 import jp.akinori.ecsite.form.admin.ItemForm;
 import jp.akinori.ecsite.form.admin.UserForm;
 import org.springframework.data.domain.Page;
@@ -18,5 +20,9 @@ public interface AdminService {
     Item createItem(ItemForm form);
 
     Page<Item> fetchAllItems(Pageable pageable);
+
+    Category createCategory(CategoryForm form);
+
+    Page<Category> fetchAllCategories(Pageable pageable);
 
 }

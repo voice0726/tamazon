@@ -10,9 +10,9 @@
 </head>
 <body>
 <div class="container">
-  <h2>ユーザー情報編集</h2>
+  <h2>商品情報編集</h2>
 
-  <form th:action="@{/accounts/admin/item}" method="post" th:object="${itemForm}">
+  <form th:action="@{/admin/item/add}" method="post" th:object="${itemForm}">
     <div class="form-group">
       <label class="form-check-label" for="name">商品名</label>
       <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></span>
@@ -20,10 +20,11 @@
              th:field="*{name}">
     </div>
     <div class="form-group">
-      <label class="form-check-label" for="category_id">カテゴリー</label>
+      <label class="form-check-label" for="category">カテゴリー</label>
       <span th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" style="color: red"></span>
-      <input id="category_id" class="form-control" type="text"
-             th:field="*{categoryId}">
+      <select class="form-control" id="category" th:field="*{categoryId}">
+        <option  th:each="element : ${categories}" th:value="${element.key}">[[${element.value}]]</option>
+      </select>
     </div>
     <div class="form-group">
       <label class="form-check-label" for="description">説明</label>
