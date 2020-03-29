@@ -85,7 +85,7 @@ public class Address extends AbstractEntity {
     }
 
     @Basic
-    @Column(name = "is_default")
+    @Column(name = "default_address")
     public boolean isDefaultAddress() {
         return defaultAddress;
     }
@@ -95,7 +95,7 @@ public class Address extends AbstractEntity {
     }
 
     @Basic
-    @Column(name = "is_deleted")
+    @Column(name = "deleted")
     public boolean isDeleted() {
         return deleted;
     }

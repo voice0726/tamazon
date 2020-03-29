@@ -1,3 +1,3 @@
-uuid,user_id,postal_code,address1,address2,address3,is_default,is_deleted,created_at,updated_at
+uuid,user_id,postal_code,address1,address2,address3,default_address,deleted,created_at,updated_at
 040a2300-5bc0-4a3b-ac89-bbaeae71a8ad,d6859a71-5779-4ea4-804d-7216aa958b5a,999-9999,testDefAddress1,testDefAddress2,testDefAddress3,1,0,2020-03-22 09:28:41,2020-03-22 09:28:41
 040a2300-5bc0-4a3b-ac89-bbaeae71a8ae,d6859a71-5779-4ea4-804d-7216aa958b5a,999-9999,testAddress1,testAddress2,testAddress3,0,1,2020-03-22 09:28:41,2020-03-22 09:28:41

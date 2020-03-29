@@ -1,15 +1,15 @@
 create table address
 (
-    uuid         varchar(36)                         not null,
-    user_id      varchar(36)                         not null,
-    postal_code  varchar(1024)                       not null,
-    address1     varchar(1024)                       not null,
-    address2     varchar(1024)                       null,
-    address3     varchar(1024)                       null,
-    default_addr tinyint                             not null,
-    deleted      tinyint                             not null,
-    created_at   timestamp default CURRENT_TIMESTAMP not null,
-    updated_at   timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+    uuid            varchar(36)                         not null,
+    user_id         varchar(36)                         not null,
+    postal_code     varchar(1024)                       not null,
+    address1        varchar(1024)                       not null,
+    address2        varchar(1024)                       null,
+    address3        varchar(1024)                       null,
+    default_address tinyint                             not null,
+    deleted         tinyint                             not null,
+    created_at      timestamp default CURRENT_TIMESTAMP not null,
+    updated_at      timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
     constraint address_uuid_uindex
         unique (uuid)
 );

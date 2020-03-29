@@ -1,78 +1,80 @@
 create table address
 (
-    id           bigint                              not null
-        primary key,
-    uuid         varchar(36)                         not null,
-    user_id      bigint                              not null,
-    postal_code  varchar(1024)                       not null,
-    address1     varchar(1024)                       not null,
-    address2     varchar(1024)                       null,
-    address3     varchar(1024)                       null,
-    default_addr tinyint                             not null,
-    deleted      tinyint                             not null,
-    created_at   timestamp default CURRENT_TIMESTAMP not null,
-    updated_at   timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint address_id_userid_uindex
-        unique (id, user_id),
+    uuid            varchar(36)                         not null,
+    user_id         varchar(36)                         not null,
+    postal_code     varchar(1024)                       not null,
+    address1        varchar(1024)                       not null,
+    address2        varchar(1024)                       null,
+    address3        varchar(1024)                       null,
+    default_address tinyint                             not null,
+    deleted         tinyint                             not null,
+    created_at      timestamp default CURRENT_TIMESTAMP not null,
+    updated_at      timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
     constraint address_uuid_uindex
         unique (uuid)
 );
 
+create index address_user_id_index
+    on address (user_id);
+
+alter table address
+    add primary key (uuid);
+
 
 create table cart
 (
-    id         char(36)                            not null
-        primary key,
-    user_id    char(36)                            not null,
-    checkout   tinyint                             not null,
+    uuid       varchar(36)                         not null,
+    user_id    varchar(36)                         not null,
     deleted    tinyint                             not null,
     created_at timestamp default CURRENT_TIMESTAMP not null,
     updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint cart_id_user_id_uindex
-        unique (id, user_id)
+    constraint cart_uuid_uindex
+        unique (uuid)
 );
+
+create index cart_user_id_index
+    on cart (user_id);
+
+alter table cart
+    add primary key (uuid);
 
 
 create table cart_item
 (
-    id         char(36)                            not null
-        primary key,
-    cart_id    char(36)                            not null,
-    item_id    char(36)                            not null,
+    uuid       varchar(36)                         not null,
+    cart_id    varchar(36)                         not null,
+    item_id    varchar(36)                         not null,
     count      int                                 not null,
     deleted    tinyint                             not null,
     created_at timestamp default CURRENT_TIMESTAMP not null,
     updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint cart_item_id_cart_id_item_id_uindex
-        unique (id, cart_id, item_id)
+    constraint cart_item_uuid_uindex
+        unique (uuid)
 );
+
+create index cart_item_cart_id_item_id_index
+    on cart_item (cart_id, item_id);
+
+alter table cart_item
+    add primary key (uuid);
 
 
 create table category
 (
-    id         bigint auto_increment,
-    uuid       varchar(36)                         not null,
+    uuid       varchar(36)                         not null
+        primary key,
     name       varchar(1024)                       not null,
     deleted    tinyint                             not null,
     created_at timestamp default CURRENT_TIMESTAMP not null,
-    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint category_id_uindex
-        unique (id),
-    constraint category_uuid_uindex
-        unique (uuid)
+    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 );
-
-alter table category
-    add primary key (id);
 
 
 create table item
 (
-    id          bigint auto_increment
-        primary key,
     uuid        varchar(36)                         not null,
     name        varchar(1024)                       not null,
-    category_id varchar(1024)                       not null,
+    category_id varchar(36)                         not null,
     description varchar(1024)                       not null,
     price       int                                 not null,
     stock       bigint                              not null,
@@ -83,43 +85,62 @@ create table item
         unique (uuid)
 );
 
+alter table item
+    add primary key (uuid);
+
+
+create table `order`
+(
+    uuid          varchar(36)                         not null
+        primary key,
+    user_id       varchar(36)                         not null,
+    pay_method_id varchar(36)                         not null,
+    ship_status   smallint  default 0                 not null,
+    created_at    timestamp default CURRENT_TIMESTAMP not null,
+    updated_at    timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+);
+
+
+create table order_item
+(
+    uuid       varchar(36)                         not null
+        primary key,
+    order_id   varchar(36)                         not null,
+    item_id    varchar(36)                         not null,
+    count      int       default 1                 not null,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+);
+
 
 create table pay_method
 (
-    id          bigint auto_increment
+    uuid           varchar(36)                         not null
         primary key,
-    uuid        varchar(36)                         not null,
-    user_id     bigint                              not null,
-    brand       smallint                            not null,
-    card_number int                                 not null,
-    card_holder varchar(1024)                       not null,
-    `default`   tinyint                             not null,
-    deleted     tinyint                             not null,
-    created_at  timestamp default CURRENT_TIMESTAMP not null,
-    updated_at  timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint pay_method_id_user_id_uindex
-        unique (id, user_id),
-    constraint pay_method_uuid_uindex
-        unique (uuid)
+    user_id        varchar(36)                         not null,
+    brand          smallint                            not null,
+    card_number    varchar(255)                        not null,
+    card_holder    varchar(1024)                       not null,
+    expire_month   int                                 not null,
+    expire_year    int                                 not null,
+    default_method tinyint                             not null,
+    deleted        tinyint                             not null,
+    created_at     timestamp default CURRENT_TIMESTAMP not null,
+    updated_at     timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 );
 
 
 create table review
 (
-    id         bigint auto_increment
+    uuid       varchar(36)                         not null
         primary key,
-    uuid       varchar(36)                         not null,
     user_id    char(36)                            not null,
     item_id    char(36)                            not null,
     star       smallint                            not null,
     comment    varchar(1024)                       not null,
     deleted    tinyint                             not null,
     created_at timestamp default CURRENT_TIMESTAMP not null,
-    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint review_id_user_id_item_id_uindex
-        unique (id, user_id, item_id),
-    constraint review_uuid_uindex
-        unique (uuid)
+    updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 );
 
 
@@ -132,17 +153,16 @@ create table role
 
 create table user
 (
-    id         bigint auto_increment
+    uuid       varchar(36)                         not null
         primary key,
-    uuid       varchar(36)                         not null,
-    username   varchar(1024)                       not null,
-    password   varchar(1024)                       not null,
-    role_id    bigint                              not null,
-    viewname   varchar(1024)                       not null,
+    username   varchar(255)                        not null,
+    view_name  varchar(255)                        not null,
+    password   varchar(255)                        not null,
+    role_id    int       default 0                 not null,
     deleted    tinyint                             not null,
     created_at timestamp default CURRENT_TIMESTAMP not null,
     updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    constraint user_uuid_uindex
-        unique (uuid)
+    constraint user_username_uindex
+        unique (username)
 );
 
