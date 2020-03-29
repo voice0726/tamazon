@@ -79,7 +79,7 @@ public class PayMethodsController {
         if (bindingResult.hasErrors()) {
             return "accounts/paymethods/edit";
         }
-        PayMethod address = accountService.editPayMethod(form);
+        PayMethod payMethod = accountService.editPayMethod(form);
         return "redirect:/accounts/paymethods/";
     }
 
@@ -87,7 +87,7 @@ public class PayMethodsController {
     public String delete(
             @PathVariable("uuid") String uuid
     ) {
-        accountService.deleteAddress(uuid);
+        accountService.deletePayMethod(uuid);
         return "redirect:/accounts/paymethods/";
     }
 }

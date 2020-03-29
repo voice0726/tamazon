@@ -155,7 +155,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deletePayMethod(String uuidStr) {
-
+        Optional<PayMethod> optional = payMethodRepository.findByUuid(UUID.fromString(uuidStr));
+        if (!optional.isPresent()) {
+            throw new RecordNotFoundException("Pay method not found"); // fixme
+        }
+        PayMethod payMethod = optional.get();
+        payMethod.setDeleted(true);
+        payMethodRepository.saveAndFlush(payMethod);
     }
 
     private void updateDefaultAddress(Address address) {
