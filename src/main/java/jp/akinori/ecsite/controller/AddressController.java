@@ -48,7 +48,7 @@ public class AddressController {
             @AuthenticationPrincipal LoginUser user
     ) {
         if (bindingResult.hasErrors()) {
-            return "accounts/addresses/edit";
+            return "accounts/addresses/add";
         }
         Address address = accountService.addAddress(form, user.getUuid());
         return "redirect:/accounts/addresses/";

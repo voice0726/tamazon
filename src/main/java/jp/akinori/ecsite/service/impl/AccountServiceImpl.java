@@ -65,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
         address.setAddress1(form.getAddress1());
         address.setAddress2(form.getAddress2());
         address.setAddress3(form.getAddress3());
-        address.setDefaultAddr(form.isDefaultAddress());
+        address.setDefaultAddress(form.isDefaultAddress());
 
         updateDefaultAddress(address);
 
@@ -159,11 +159,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void updateDefaultAddress(Address address) {
-        if (address.isDefaultAddr()) {
-            Optional<Address> defaultAddressOptional = addressRepository.findByDefaultAddrTrue();
+        if (address.isDefaultAddress()) {
+            Optional<Address> defaultAddressOptional = addressRepository.findByDefaultAddressTrue();
             if (defaultAddressOptional.isPresent()) {
                 Address defaultAddress = defaultAddressOptional.get();
-                defaultAddress.setDefaultAddr(false);
+                defaultAddress.setDefaultAddress(false);
                 addressRepository.save(defaultAddress);
             }
         }

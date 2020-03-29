@@ -1,11 +1,9 @@
 package jp.akinori.ecsite.entity;
 
-import jp.akinori.ecsite.entity.helper.UuidToStringConverter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,7 +17,7 @@ public class Address extends AbstractEntity {
     private String address1;
     private String address2;
     private String address3;
-    private boolean defaultAddr;
+    private boolean defaultAddress;
     private boolean deleted;
     private User user;
 
@@ -87,17 +85,17 @@ public class Address extends AbstractEntity {
     }
 
     @Basic
-    @Column(name = "default_addr")
-    public boolean isDefaultAddr() {
-        return defaultAddr;
+    @Column(name = "is_default")
+    public boolean isDefaultAddress() {
+        return defaultAddress;
     }
 
-    public void setDefaultAddr(boolean defaultAddr) {
-        this.defaultAddr = defaultAddr;
+    public void setDefaultAddress(boolean defaultAddr) {
+        this.defaultAddress = defaultAddr;
     }
 
     @Basic
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     public boolean isDeleted() {
         return deleted;
     }
@@ -111,7 +109,7 @@ public class Address extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return defaultAddr == address.defaultAddr &&
+        return defaultAddress == address.defaultAddress &&
                 deleted == address.deleted &&
                 Objects.equals(uuid, address.uuid) &&
                 Objects.equals(userId, address.userId) &&
@@ -125,7 +123,7 @@ public class Address extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, userId, postalCode, address1, address2, address3, defaultAddr, deleted, createdAt, updatedAt);
+        return Objects.hash(uuid, userId, postalCode, address1, address2, address3, defaultAddress, deleted, createdAt, updatedAt);
     }
 
     @OneToOne

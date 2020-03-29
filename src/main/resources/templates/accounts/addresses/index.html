@@ -29,7 +29,7 @@
       <td th:text="*{address1}"></td>
       <td th:text="*{address2}"></td>
       <td th:text="*{address3}"></td>
-      <td><span th:if="*{isDefaultAddr() == true}">既定</span></td>
+      <td><span th:if="*{defaultAddress == true}">既定</span></td>
       <td><a th:href="@{/accounts/addresses/edit/{uuid}(uuid=*{uuid})}">編集</a></td>
       <td><a th:href="@{/accounts/addresses/delete/{uuid}(uuid=*{uuid})}">削除</a></td>
     </tr>

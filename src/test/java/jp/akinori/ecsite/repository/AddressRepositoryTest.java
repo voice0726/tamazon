@@ -44,7 +44,7 @@ class AddressRepositoryTest {
         address.setAddress1("大磯715");
         address.setAddress2("中郡大磯町");
         address.setAddress3("神奈川県");
-        address.setDefaultAddr(false);
+        address.setDefaultAddress(false);
         address.setDeleted(false);
 
         repository.saveAndFlush(address);

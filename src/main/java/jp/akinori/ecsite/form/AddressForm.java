@@ -29,7 +29,7 @@ public class AddressForm {
         this.address1 = address.getAddress1();
         this.address2 = address.getAddress2();
         this.address3 = address.getAddress3();
-        this.defaultAddress = address.isDefaultAddr();
+        this.defaultAddress = address.isDefaultAddress();
     }
 
     public Address convertToEntity() {
@@ -40,9 +40,9 @@ public class AddressForm {
         address.setAddress3(this.address3);
         address.setPostalCode(this.postalCode);
         if (defaultAddress) {
-            address.setDefaultAddr(true);
+            address.setDefaultAddress(true);
         } else {
-            address.setDefaultAddr(false);
+            address.setDefaultAddress(false);
         }
         address.setDeleted(false);
         return address;

@@ -52,7 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         databaseConnection = "dataSource",
         dataSetLoader = ReplacementCsvDataSetLoader.class
 )
-
 class AddressControllerTest {
 
     private static final String TEST_DATA_DIR = "/DBUnit/AddressControllerTest/";
@@ -65,6 +64,7 @@ class AddressControllerTest {
 
     /**
      * Indexページを表示できるかテスト
+     *
      * @throws Exception 例外
      */
     @Test
@@ -87,6 +87,7 @@ class AddressControllerTest {
 
     /**
      * 新規追加ページを表示できるかテスト
+     *
      * @throws Exception 例外
      */
     @Test
@@ -105,6 +106,7 @@ class AddressControllerTest {
 
     /**
      * 正常なフォームでPOST送信し，追加されているか確認
+     *
      * @throws Exception 例外
      */
     @Test
@@ -116,7 +118,6 @@ class AddressControllerTest {
                         .post("/accounts/addresses/add")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(APPLICATION_FORM_URLENCODED)
-                        .param("uuid", "d6859a71-5779-4ea4-804d-7216aa958b5a")
                         .param("postalCode", "111-1111")
                         .param("address1", "unitTest")
                         .param("address2", "unitTest")
@@ -150,6 +151,7 @@ class AddressControllerTest {
 
     /**
      * postalCodeが空欄の状態でPOSTリクエストを送信し，バリデーションで弾くかテスト。
+     *
      * @throws Exception
      */
     @Test
@@ -161,7 +163,6 @@ class AddressControllerTest {
                         .post("/accounts/addresses/add")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(APPLICATION_FORM_URLENCODED)
-                        .param("uuid", "d6859a71-5779-4ea4-804d-7216aa958b5a")
                         .param("postalCode", "")
                         .param("address1", "unitTest")
                         .param("address2", "unitTest")
@@ -171,7 +172,7 @@ class AddressControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("accounts/addresses/edit"))
+                .andExpect(view().name("accounts/addresses/add"))
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -186,6 +187,7 @@ class AddressControllerTest {
 
     /**
      * address1が空欄の状態でPOSTリクエストを送信し，バリデーションで弾くかテスト。
+     *
      * @throws Exception
      */
     @Test
@@ -197,7 +199,6 @@ class AddressControllerTest {
                         .post("/accounts/addresses/add")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(APPLICATION_FORM_URLENCODED)
-                        .param("uuid", "d6859a71-5779-4ea4-804d-7216aa958b5a")
                         .param("postalCode", "111-1111")
                         .param("address1", "")
                         .param("address2", "unitTest")
@@ -207,7 +208,7 @@ class AddressControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("accounts/addresses/edit"))
+                .andExpect(view().name("accounts/addresses/add"))
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -222,6 +223,7 @@ class AddressControllerTest {
 
     /**
      * address2が空欄の状態でPOSTリクエストを送信し，バリデーションで弾くかテスト。
+     *
      * @throws Exception
      */
     @Test
@@ -233,7 +235,6 @@ class AddressControllerTest {
                         .post("/accounts/addresses/add")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(APPLICATION_FORM_URLENCODED)
-                        .param("uuid", "d6859a71-5779-4ea4-804d-7216aa958b5a")
                         .param("postalCode", "111-1111")
                         .param("address1", "unitTest")
                         .param("address2", "")
@@ -243,7 +244,7 @@ class AddressControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("accounts/addresses/edit"))
+                .andExpect(view().name("accounts/addresses/add"))
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -258,6 +259,7 @@ class AddressControllerTest {
 
     /**
      * addresss3が空欄の状態でPOSTリクエストを送信し，バリデーションで弾くかテスト。
+     *
      * @throws Exception
      */
     @Test
@@ -269,7 +271,6 @@ class AddressControllerTest {
                         .post("/accounts/addresses/add")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(APPLICATION_FORM_URLENCODED)
-                        .param("uuid", "d6859a71-5779-4ea4-804d-7216aa958b5a")
                         .param("postalCode", "111-1111")
                         .param("address1", "unitTest")
                         .param("address2", "unitTest")
@@ -279,7 +280,7 @@ class AddressControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("accounts/addresses/edit"))
+                .andExpect(view().name("accounts/addresses/add"))
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -291,4 +292,106 @@ class AddressControllerTest {
         assert fieldError != null;
         assertThat(fieldError.getField(), is("address3"));
     }
+
+    @Test
+    @DatabaseSetup(TEST_DATA_DIR)
+    @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
+    public void testEditIndex() throws Exception {
+
+        MockHttpServletRequestBuilder postRequest =
+                MockMvcRequestBuilders
+                        .get("/accounts/addresses/edit/040a2300-5bc0-4a3b-ac89-bbaeae71a8ad");
+
+        mockMvc.perform(postRequest)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("accounts/addresses/edit"))
+                .andReturn();
+    }
+
+    @Test
+    @DatabaseSetup(TEST_DATA_DIR)
+    @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
+    public void testEditExec() throws Exception {
+
+        // すべての項目を編集（既定をfalse）
+        MockHttpServletRequestBuilder postRequest =
+                MockMvcRequestBuilders
+                        .post("/accounts/addresses/edit")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(APPLICATION_FORM_URLENCODED)
+                        .param("uuid", "040a2300-5bc0-4a3b-ac89-bbaeae71a8ad")
+                        .param("postalCode", "222-2222")
+                        .param("address1", "edited")
+                        .param("address2", "edited")
+                        .param("address3", "edited")
+                        .param("defaultAddress", "false");
+
+        mockMvc.perform(postRequest)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/accounts/addresses/"))
+                .andReturn();
+
+        Optional<Address> addressOptional = addressRepository
+                .findByUuid(UUID.fromString("040a2300-5bc0-4a3b-ac89-bbaeae71a8ad"));
+
+        assert addressOptional.isPresent();
+
+        Address address = addressOptional.get();
+        assertThat(address.getUuid(), is(UUID.fromString("040a2300-5bc0-4a3b-ac89-bbaeae71a8ad")));
+        assertThat(address.getPostalCode(), is("222-2222"));
+        assertThat(address.getAddress1(), is("edited"));
+        assertThat(address.getAddress2(), is("edited"));
+        assertThat(address.getAddress3(), is("edited"));
+        assertThat(address.isDefaultAddress(), is(false));
+
+        // 既定をtrueにするテスト
+        MockHttpServletRequestBuilder postRequest2 =
+                MockMvcRequestBuilders
+                        .post("/accounts/addresses/edit")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(APPLICATION_FORM_URLENCODED)
+                        .param("uuid", "040a2300-5bc0-4a3b-ac89-bbaeae71a8ad")
+                        .param("postalCode", "222-2222")
+                        .param("address1", "edited")
+                        .param("address2", "edited")
+                        .param("address3", "edited")
+                        .param("defaultAddress", "true");
+
+        mockMvc.perform(postRequest2);
+        Optional<Address> addressOptional2 = addressRepository
+                .findByUuid(UUID.fromString("040a2300-5bc0-4a3b-ac89-bbaeae71a8ad"));
+
+        assert addressOptional2.isPresent();
+
+        Address address2 = addressOptional2.get();
+        assertThat(address2.getUuid(), is(UUID.fromString("040a2300-5bc0-4a3b-ac89-bbaeae71a8ad")));
+        assertThat(address2.isDefaultAddress(), is(true));
+    }
+
+    @Test
+    @DatabaseSetup(TEST_DATA_DIR)
+    @WithUserDetails(value = "test", userDetailsServiceBeanName = "userDetailsServiceImpl")
+    public void testDelete() throws Exception {
+        MockHttpServletRequestBuilder postRequest =
+                MockMvcRequestBuilders
+                        .get("/accounts/addresses/delete/040a2300-5bc0-4a3b-ac89-bbaeae71a8ad");
+
+        mockMvc.perform(postRequest)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/accounts/addresses/"))
+                .andReturn();
+
+        Optional<Address> addressOptional = addressRepository
+                .findByUuid(UUID.fromString("040a2300-5bc0-4a3b-ac89-bbaeae71a8ad"));
+
+        assert addressOptional.isPresent();
+
+        Address address = addressOptional.get();
+        assertThat(address.isDeleted(), is(true));
+    }
+
+
 }
